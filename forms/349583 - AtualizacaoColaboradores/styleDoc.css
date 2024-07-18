@@ -1,0 +1,76 @@
+*{
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+#documeto{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 0.8rem;
+    padding: 2cm;
+    width: 21cm;
+    height: 29.7cm;
+}
+img#docLogo{
+    width: 60%;
+}
+table{
+    border-collapse: collapse;
+}
+table.initial{
+    margin: 0px auto;
+    width: 100%;
+}
+table.initial th,table.initial td{
+    width: 300px;
+    height: 60px;
+    text-align: center;
+    border: 1px solid black;
+}
+table.tb td,table.tb th{
+    border: 1px solid black;
+    width: 500px;
+}
+h3{
+    margin-left: 4%;
+}
+.tit{
+    text-align: center;
+    background-color: #000000;
+    color: #ffffff;
+}
+.tit2{
+    background-color: #ada6a6;
+}
+table.tb th.alinhar{
+    text-align: left;
+    width: 150px;
+}
+.Tamanho{
+    width: 100%;
+}
+.assinatura{
+    margin-bottom: -10px;
+}
+.flex{
+    display: flex;
+    justify-content:space-between;
+}
+.quadrado{
+    border: 1px solid black;
+    width: 10px;
+    height: 10px;
+    margin: auto auto;
+}
+h4{
+    text-align: center;
+    position: relative;
+    top:-250%;
+}
+.obs{
+    margin: 0;
+}
+.center{
+    margin:0 auto;
+}
+div.ass{
+    border-top: solid 1px black;
+}

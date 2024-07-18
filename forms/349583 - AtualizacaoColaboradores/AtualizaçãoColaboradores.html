@@ -1,0 +1,1137 @@
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide.min.css"/>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="styleDoc.css">
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="./AtualizacaoColaboradores.js"></script>
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+</head>
+<body>
+<div class="fluig-style-guide" id="formularioPI">
+<form name="form" role="form">
+	<input type="text" id="dataCriacao" name="dataCriacao" hidden>
+	<div class="panel panel-default"><!--Div usado para definir o painel do formulario-->
+		<div class="panel-heading"><!--Div para definir o cabeçalho do formulario-->
+			<div id="divCenter2" >						
+				<img src="./logo.png" alt="logo da thcm" /><!--Colocando o logo da THCM-->
+			</div>
+		</div>
+		<div class="panel-body"><!--Parte referente ao corpo do formulario ou seja onde vai as perguntas-->
+			<div class="row form-group" id="dadosIniciais">
+				<div class="col-md-12">
+					<div class="panel panel-primary">
+						<div class="panel-heading"><!--Div para definir o cabeçalho do formulario-->
+							<div>						
+								Dados a serem inseridos/modificados
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="row form-group"><!--Definido a div da linha da pergunda-->
+								<div class="col-md-3"><!--Definindo o tamanho que vai ter o campo podendo ser de 1 a 18-->
+									<label class="control-label" for="tipo">Situação</label>
+									<select name="tipo" id="tipo" class="form-control" data-fluig-required="true"
+									data-fluig-write="0,4" data-fluig-state-valid="0,4" onchange="seleciona(this.value,'atualiza')">
+										<option value="">Selecione a situação</option>
+										<option value="Novo Colaborador">Novo Colaborador</option>
+										<option value="Atualização de cargo">Atualização de cargo</option>
+										<option value="Desligamento de colaborador">Desligamento</option>
+										<option value="Modificação de acesso/menu">Modificação de acesso/menu</option>
+										<option value="Outro">Outro</option>
+									</select>
+								</div>
+								<div class="col-md-6"><!--Definindo o tamanho que vai ter o campo podendo ser de 1 a 18-->
+									<label class="control-label" for="nomeCompleto">Nome Completo</label>
+									<div class="input-group">
+										<input type="text" id="nomeCompleto" data-fluig-write="0,4" data-fluig-state-valid="0,4" name="nomeCompleto" class="form-control form-control-sm" data-fluig-required="true" analytics="true" gooddataid="1" onblur="BuscaUser(this.value,'docNome','nomeCompleto','emailColaborador')">
+										<span id="busca" class="input-group-addon" onclick="consultaUser('nomeCompleto','emailColaborador')"><i class="flaticon flaticon-search icon-sm" aria-hidden="true"></i></span>
+									</div>									
+								</div>
+								<div class="col-md-3"><!--Definindo o tamanho que vai ter o campo podendo ser de 1 a 18-->
+									<label class="control-label" for="setor">Setor</label>
+									<select name="setor" id="setor" class="form-control" data-fluig-required="true"
+									data-fluig-write="0,4" data-fluig-state-valid="0,4" onchange="defineValor(this.value,'docDepartamento')">
+										<option value="">Escolha o setor</option>
+										<option value="Administrativo">Administrativo</option>
+										<option value="Comercial">Comercial</option>
+										<option value="Contabilidade">Contabilidade</option>
+										<option value="Engenharia">Engenharia</option>
+										<option value="Financeiro">Financeiro</option>
+										<option value="Jurídico">Jurídico</option>
+										<option value="Marketing">Marketing</option>
+										<option value="Planejamento Urbano">Planejamento Urbano</option>
+										<option value="Tecnologia da Informação">Tecnologia da Informação</option>
+									</select>
+								</div>
+								
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3"><!--Definindo o tamanho que vai ter o campo podendo ser de 1 a 18-->
+									<label class="control-label" for="cargo">Cargo</label>
+									<input type="text" id="cargo" data-fluig-write="0,4" data-fluig-state-valid="0,4" name="cargo" class="form-control form-control-sm"
+									data-fluig-required="true" analytics="true" gooddataid="1" onblur="defineValor(this.value,'docCargo')">
+								</div>
+								<div class="col-md-6 ">
+									<label class="control-label" for="emailColaborador">email:</label>
+									<input type="text" id="emailColaborador" data-fluig-write="0,4" data-fluig-state-valid="0,4" name="emailColaborador" class="form-control form-control-sm"
+									data-fluig-required="true" analytics="true" gooddataid="1" onblur="defineValor(this.value,'docEmail')">
+								</div>
+								<div class="col-md-3">
+									<label class="control-label" style="padding-right: 2%;">Tipo de Alteração:</label><br>
+									<div class="custom-radio custom-radio-inline custom-radio-primary">
+										<input type="radio" name="radiotypes" value="Inclusão" id="Inclusao" class="form-control form-control-sm"
+										data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="definetipo()">
+										<label for="Inclusao">Inclusão</label>
+									</div>
+									<div class="custom-radio custom-radio-inline custom-radio-primary">
+										<input type="radio" name="radiotypes" value="Solicitação" id="Alteracao" class="form-control form-control-sm " 
+										data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="definetipo()">
+										<label for="Alteracao" >Alteração</label>
+									</div>
+									<div class="custom-radio custom-radio-inline custom-radio-primary">
+										<input type="radio" name="radiotypes" value="Solicitação" id="Desativacao" class="form-control form-control-sm" 
+										data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="definetipo()">
+										<label for="Desativacao" >Revogação</label>
+									</div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-6"><!--Definindo o tamanho que vai ter o campo podendo ser de 1 a 18-->
+									<label class="control-label" for="aprovador">Aprovador:</label>
+									<div class="input-group">
+										<input type="text" id="aprovador" data-fluig-write="0,4" data-fluig-state-valid="0,4" name="aprovador" class="form-control form-control-sm"	data-fluig-required="true" analytics="true" gooddataid="1" onblur="BuscaUser(this.value,'docAprovador','aprovador','emailAprovador')">
+										<span id="busca" class="input-group-addon" onclick="consultaUser('aprovador','emailAprovador')"><i class="flaticon flaticon-search icon-sm" aria-hidden="true"></i></span>
+									</div>	
+								</div>
+								<div class="col-md-6 ">
+									<label class="control-label" for="emailAprovador">email:</label>
+									<input type="text" id="emailAprovador" data-fluig-write="0,4" data-fluig-state-valid="0,4" name="emailAprovador" class="form-control form-control-sm"
+									data-fluig-required="true" analytics="true" gooddataid="1" onblur="defineValor(this.value,'docEmailAprovador')">
+								</div>
+								
+							</div>
+						</div>			
+					</div>
+				</div>
+			</div>
+			<div class="row form-group" id="AcessosServiços">
+				<div class="col-md-12">
+					<div class="panel panel-primary">
+						<div class="panel-heading"><!--Div para definir o cabeçalho do formulario-->
+							<div>						
+								Serviços a serem liberados
+							</div>
+						</div>
+						<div class="panel-body">
+							
+							<table class="table">
+								<thead>
+									<tr class="tableHeadRow">
+										<th scope="col" class="tableColumn" class="col-xs-5 col-md-5">Serviço</th>
+										<th scope="col" class="tableColumn" class="col-xs-1 col-md-1">Liberado</th>
+										<th scope="col" class="tableColumn" class="col-xs-5 col-md-5">Serviço</th>
+										<th scope="col" class="tableColumn" class="col-xs-1 col-md-1">Liberado</th>
+									</tr>
+								</thead>
+								<tbody>
+													
+									<tr class="tableBodyRow" id="linha1">
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Totvs Fluig</td>
+										<td class="form-input ">
+											<input type="checkbox" name="fluig" id="fluig" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="openEsp(this,'docFluigLib')">
+										</td>
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Active Directory</td>
+										<td class="form-input ">
+											<input type="checkbox" name="ad" id="ad" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docADlib')">
+										</td>
+									</tr>
+									<tr class="tableBodyRow" id="linha2">
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Totvs Assinatura Eletrônica</td>
+										<td class="form-input ">
+											<input type="checkbox" name="TAE" id="TAE" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4"
+											onclick="verificaSeleção(this,'docTaeLib')">
+										</td>
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Totvs RM</td>
+										<td class="form-input ">
+											<input type="checkbox" name="RM" id="RM" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4"
+											onclick="verificaSeleção(this,'docRmLib')">
+										</td>
+									</tr>
+									<tr class="tableBodyRow" id="linha3">
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Totvs Transmite</td>
+										<td class="form-input ">
+											<input type="checkbox" name="Transmite" id="Transmite" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docTransLib')">
+										</td>
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Totvs Protheus</td>
+										<td class="form-input ">
+											<input type="checkbox" name="Protheus" id="Protheus" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="openEsp(this,'docProLib')">
+										</td>
+									</tr>
+								</tbody>
+											
+							</table>
+									
+						</div>
+					</div>			
+				</div>
+			</div>
+			<div class="row form-group" id="AcessoEspPro">
+				<div class="col-md-12">
+					<div class="panel panel-primary">
+						<div class="panel-heading"><!--Div para definir o cabeçalho do formulario-->
+							<div>						
+								Modulos do Protheus a ser liberado
+							</div>
+						</div>
+						<div class="panel-body">
+							<table class="table">
+								<thead>
+									<tr class="tableHeadRow">
+										<th scope="col" class="tableColumn" class="col-xs-5 col-md-5">Modulos</th>
+										<th scope="col" class="tableColumn" class="col-xs-1 col-md-1">Liberado</th>
+										<th scope="col" class="tableColumn" class="col-xs-5 col-md-5">Modulos</th>
+										<th scope="col" class="tableColumn" class="col-xs-1 col-md-1">Liberado</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="tableBodyRow" >
+														
+														
+														
+														
+									</tr>
+									<tr class="tableBodyRow" id="linha1">
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Compras</td>
+										<td class="form-input ">
+											<input type="checkbox" name="compras" id="compras" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docCompralib')">
+										</td>
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Financeiro – Contas a Receber</td>
+										<td class="form-input ">
+											<input type="checkbox" name="contaReceber" id="contaReceber" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docContReclib')">
+										</td>
+									</tr>
+									<tr class="tableBodyRow" id="linha2">
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Financeiro – Contas a Pagar</td>
+										<td class="form-input ">
+											<input type="checkbox" name="contaPagar" id="contaPagar" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docContPaglib')">
+										</td>
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Financeira – Tesouraria</td>
+										<td class="form-input " >
+											<input type="checkbox" name="tesouraria" id="tesouraria" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docTeslib')">
+										</td>
+									</tr>
+									<tr class="tableBodyRow" id="linha3">
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Contabilidade</td>
+										<td class="form-input ">
+											<input type="checkbox" name="Contabilidade" id="Contabilidade" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docContablib')">
+										</td>
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Recursos Humanos</td>
+										<td class="form-input ">
+											<input type="checkbox" name="rh" id="rh" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docRhlib')">
+										</td>
+									</tr>
+									<tr class="tableBodyRow" id="linha4">
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Faturamento</td>
+										<td class="form-input ">
+											<input type="checkbox" name="Faturamento" id="Faturamento" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docfatlib')">
+										</td>
+										<td class="fs-v-align-middle col-xs-4 col-md-4">TAF</td>
+										<td class="form-input ">
+											<input type="checkbox" name="TAF" id="TAF" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'doctaflib')">
+										</td>
+									</tr>
+									<tr class="tableBodyRow" id="linha5">
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Ativo Fixo</td>
+										<td class="form-input ">
+											<input type="checkbox" name="AtivoFixo" id="AtivoFixo" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docAtflib')">
+										</td>
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Livros Fiscais</td>
+										<td class="form-input ">
+											<input type="checkbox" name="LivrosFiscais" id="LivrosFiscais" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'doclivrolib')">
+										</td>
+									</tr>
+									<tr class="tableBodyRow" id="linha6">
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Estoque e Custo</td>
+										<td class="form-input ">
+											<input type="checkbox" name="EstoqueCusto" id="EstoqueCusto" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'docestlib')">
+										</td>
+										<td class="fs-v-align-middle col-xs-4 col-md-4">Configurador</td>
+										<td class="form-input ">
+											<input type="checkbox" name="Configurador" id="Configurador" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção(this,'doccfglib')">
+										</td>
+									</tr>
+								</tbody>											
+							</table>
+						</div>
+					</div>			
+				</div>
+			</div>
+			<div class="row form-group" id="AcessoEspFluig">
+				<div class="col-md-12">
+					<div class="panel panel-primary">
+						<div class="panel-heading"><!--Div para definir o cabeçalho do formulario-->
+							<div>						
+								Modulos do Fluig a ser liberado
+							</div>
+						</div>
+						<div class="panel-body">
+							<table class="table">
+								<thead>
+									<tr class="tableHeadRow">
+										<th scope="col" class="tableColumn" class="col-xs-5 col-md-5">Modulos</th>
+										<th scope="col" class="tableColumn" class="col-xs-1 col-md-1">Liberado Total</th>
+										<th scope="col" class="tableColumn" class="col-xs-5 col-md-5">Liberação Parcial</th>
+									</tr>
+								</thead>
+								<tbody>
+										<tr class="tableBodyRow" >
+											
+											
+											
+											
+										</tr>
+										<tr class="tableBodyRow" id="linha1">
+											<td class="fs-v-align-middle col-xs-4 col-md-4">GED</td>
+											<td class="form-input ">
+												<input type="checkbox" name="gedTot" id="gedTot" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção2(this,'docgedlib','Tot')">
+											</td>
+											<td class="form-input ">
+												<input type="checkbox" name="gedParc" id="gedParc" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção2(this,'docgedlib','Parc')">
+											</td>
+										</tr>
+										<tr class="tableBodyRow" id="linha2">
+											<td class="fs-v-align-middle col-xs-4 col-md-4">Processo</td>
+											<td class="form-input ">
+												<input type="checkbox" name="proTot" id="proTot" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção2(this,'docprocessolib','Tot')">
+											</td>
+											<td class="form-input ">
+												<input type="checkbox" name="proParc" id="proParc" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4"
+												onclick="verificaSeleção2(this,'docprocessolib','Parc')">
+											</td>
+										</tr>
+										<tr class="tableBodyRow" id="linha3">
+											<td class="fs-v-align-middle col-xs-4 col-md-4">Configurador</td>
+											<td class="form-input ">
+												<input type="checkbox" name="cfgTot" id="cfgTot" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção2(this,'docConfiglib','Tot')">
+											</td>
+											<td class="form-input ">
+												<input type="checkbox" name="cfgParc" id="cfgParc" class="form-control form-control-sm" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4" onclick="verificaSeleção2(this,'docConfiglib','Parc')">
+											</td>
+										</tr>
+								</tbody>
+							</table>									
+						</div>
+					</div>			
+				</div>
+			</div>
+			<div class="row form-group" id="AcessoEspObs">
+				<div class="col-md-12">
+					<div class="panel panel-primary">
+						<div class="panel-heading"><!--Div para definir o cabeçalho do formulario-->
+							<div>						
+								Observação
+							</div>
+						</div>
+						<textarea type="text" id="obsTXT" data-fluig-write="" data-fluig-state-valid="" name="obsTXT" class="form-control form-control-sm"
+						analytics="true" gooddataid="1" cols="100" rows="10" style="display: none;"></textarea>
+						<div class="panel-body">
+							<div class="row form-group">
+								<div class="col-md-12">
+									<label class="control-label" for="obs">Observação:</label>
+									<textarea type="text" id="obs" data-fluig-write="0,4" data-fluig-state-valid="0,4" name="obs" class="form-control form-control-sm"
+									analytics="true" gooddataid="1"  cols="100" rows="10" onkeyup="defineTexto(this.value,'docObservacao')" onblur="defineTexto(this.value,'docObservacao')"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>			
+				</div>
+			</div>
+			<div class="row form-group" id="AtividesRealizado">
+				<div class="col-md-12">
+					<div class="panel panel-primary"><!--Div usado para definir o painel do formulario-->
+						<div class="panel-heading"><!--Div para definir o cabeçalho do formulario-->
+							<div>						
+								Atividades a serem realizados
+							</div>
+						</div>
+						<div class="panel-body">
+							<table class="table">
+								<thead>
+									<tr class="tableHeadRow">
+										<th scope="col" class="tableColumn" class="col-xs-2 col-md-2">Serviço</th>
+										<th scope="col" class="tableColumn" class="col-xs-3 col-md-2">Atividade</th>
+										<th scope="col" class="tableColumn" class="col-xs-3 col-md-2">Observação</th>
+										<th scope="col" class="tableColumn" class="col-xs-1 col-md-1">Concluido</th>
+									</tr>
+								</thead>
+								<tbody>
+									<div id="novoColaborador">
+										<tr class="tableBodyRow" id="novoColaborador1">
+													    
+													    <td>Geral</td>
+													    <td>Criar Email para o Colaborador</td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="text" name="obs1" id="obs1" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="checkbox" name="concluido1" id="concluido1" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+										</tr>
+										<tr class="tableBodyRow"  id="novoColaborador2">
+													    
+													    <td>Geral</td>
+													    <td>Solicitar e colocar assinatura no email</td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="text" name="obs2" id="obs2" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="checkbox" name="concluido2" id="concluido2" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+										</tr>
+										<tr class="tableBodyRow" id="novoColaborador3">
+													    
+													    <td>Geral</td>
+													    <td>Inserir no acesso às portas físicas</td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="text" name="obs3" id="obs3" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="checkbox" name="concluido3" id="concluido3" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+										</tr>
+										<tr class="tableBodyRow" id="novoColaborador4">
+													    
+													    <td>Geral</td>
+													    <td>Criar Usuário VPN para acesso ao servidor</td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="text" name="obs30" id="obs30" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="checkbox" name="concluido30" id="concluido30" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+										</tr>
+									</div>
+									<div id="desligamento">
+										<tr class="tableBodyRow" id="desligamento1">
+													    
+													    <td>Geral</td>
+													    <td>Desativação do Email do Colaborador</td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="text" name="obs31" id="obs31" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="checkbox" name="concluido31" id="concluido31" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+										</tr>
+										<tr class="tableBodyRow" id="desligamento2">
+													    
+													    <td>Geral</td>
+													    <td>Revogar o acesso às portas físicas</td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="text" name="obs33" id="obs33" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="checkbox" name="concluido33" id="concluido33" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+										</tr>
+										<tr class="tableBodyRow" id="desligamento3">
+													    
+													    <td>Geral</td>
+													    <td>Revogar o acesso à VPN</td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="text" name="obs29" id="obs29" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+													    <td>
+													        <div class="form-input ">
+													            <input type="checkbox" name="concluido29" id="concluido29" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+													        </div>
+													    </td>
+										</tr>
+									</div>
+									<tr class="tableBodyRow">
+										    
+										    <td>Geral</td>
+										    <td>Criar o documento e inserir no TAE</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs4" id="obs4" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido4" id="concluido4" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiAD">
+										    
+										    <td>AD</td>
+										    <td id="CriarAd">Criar o acesso no AD</td>
+										    <td id="RevogarAd">Revogar o acesso no AD</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs5" id="obs5" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido5" id="concluido5" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiPro">
+										    
+										    <td>Protheus</td>
+										    <td id="novoUserProtheus">Inserir o Usuário no Protheus</td>
+										    <td id="bloqUserProtheus">Bloquear o Usuário no Protheus</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs6" id="obs6" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido6" id="concluido6" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProCompras">
+										    
+										    <td>Protheus</td>
+										    <td id="libCompra">Liberar o modulo de Compras</td>
+										    <td id="revCompra">Revogar o modulo de Compras</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs7" id="obs7" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido7" id="concluido7" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProContaPagar">
+										    
+										    <td>Protheus</td>
+										    <td id="libContPg">Liberar o modulo do Financeiro – Contas a Pagar</td>
+										    <td id="revContPg">Revogar o modulo do Financeiro – Contas a Pagar</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs8" id="obs8" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido8" id="concluido8" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProContabilidade">
+										
+										<td>Protheus</td>
+										<td id="libCtb">Liberar o modulo de Contabilidade</td>
+										<td id="RevCtb">Revogar o modulo de Contabilidade</td>
+										<td>
+										    <div class="form-input ">
+										        <input type="text" name="obs9" id="obs9" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										    </div>
+										</td>
+										<td>
+										    <div class="form-input ">
+										        <input type="checkbox" name="concluido9" id="concluido9" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										    </div>
+										</td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProFaturamento">
+										    
+										    <td>Protheus</td>
+										    <td id="libFat">Liberar o modulo de Faturamento</td>
+										    <td id="RevFat">Revogar o modulo de Faturamento</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs10" id="obs10" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido10" id="concluido10" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProAtivoFixo">
+										    
+										    <td>Protheus</td>
+										    <td id="libAtf">Liberar o modulo de Ativo Fixo</td>
+										    <td id="revAtf">Revogar o modulo de Ativo Fixo</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs11" id="obs11" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido11" id="concluido11" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProEstoqueCusto">
+										    
+										    <td>Protheus</td>
+										    <td id="libEst">Liberar o modulo de Estoque e Custo</td>
+										    <td id="revEst">Revogar o modulo de Estoque e Custo</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs12" id="obs12" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido12" id="concluido12" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProContasReceber">
+										    
+										    <td>Protheus</td>
+										    <td id="libContRec">Liberar o modulo de Financeiro – Contas a Receber</td>
+										    <td id="revContRec">Revogar o modulo de Financeiro – Contas a Receber</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs13" id="obs13" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido13" id="concluido13" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProTesouraria">
+										    
+										    <td>Protheus</td>
+										    <td id="libTes">Liberar o modulo de Financeiro – Tesouraria</td>
+										    <td id="revTes">Revogar o modulo de Financeiro – Tesouraria</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs14" id="obs14" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido14" id="concluido14" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProRecursosHumanos">
+										    
+										    <td>Protheus</td>
+										    <td id="libRh">Liberar o modulo do Recursos Humanos</td>
+										    <td id="revRh">Revogar o modulo do Recursos Humanos</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs15" id="obs15" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido15" id="concluido15'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProTAF">
+										    
+										    <td>Protheus</td>
+										    <td id="libTaf">Liberar o modulo de TAF</td>
+										    <td id="revTaf">Revogar o modulo de TAF</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs16" id="obs16" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido16" id="concluido16" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProLivrosFiscaiss">
+										    
+										    <td>Protheus</td>
+										    <td id="libLiv">Liberar o modulo de Livros Fiscais</td>
+										    <td id="revLiv">Revogar o modulo de Livros Fiscais</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs17" id="obs17" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido17" id="concluido17" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiProContaConfigurador">
+										    
+										    <td>Protheus</td>
+										    <td id="libCfg">Liberar o modulo do Configurador</td>
+										    <td id="revCfg">Revogar o modulo do Configurador</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs18" id="obs18" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido18" id="concluido18'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiFluigIdentity">
+										    
+										    <td>Fluig</td>
+										    <td id="criarIdentity">Criar um Usuário no Identity</td>
+										    <td id="bloqIdentity">Bloquear o Usuário no Identity</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs24" id="obs24" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido24" id="concluido24'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiFluigLicenca">
+										    
+										    <td>Fluig</td>
+										    <td id="criarFluig">Criar um Usuário e inserir uma licença no Fluig</td>
+										    <td id="desatFluig">Desativacao do Usuário</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs25" id="obs24" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido25" id="concluido25'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiFluigGedTot">
+										    
+										    <td>Fluig</td>
+										    <td id="libTotGed">Liberar totalmente o GED</td>
+										    <td id="RevTotGed">Revogar totalmente o GED</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs19" id="obs19" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido19" id="concluido19'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiFluigGedParc">
+										    
+										    <td>Protheus</td>
+										    <td id="libParcGed">Liberar parcialmente o GED</td>
+										    <td id="revParcGed">Revogar parcialmente o GED</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs40" id="obs40" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido40" id="concluido40'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiFluigProcessoTot">
+										    
+										    <td>Fluig</td>
+										    <td id="libTotPro">Liberar totalmente o Processo</td>
+										    <td id="revTotPro">Revogar totalmente o Processo</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs20" id="obs20" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido20" id="concluido20'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiFluigProcessoParc">
+										    
+										    <td>Fluig</td>
+										    <td id="libParcPro">Liberar parcialmente o processo</td>
+										    <td id="revParcPro">Revogar parcialmente o processo</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs21" id="obs21" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido21" id="concluido21'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiFluigConfiguradorTot">
+										    
+										    <td>Fluig</td>
+										    <td id="libTotCfg">Liberar totalmente o configurador</td>
+										    <td id="revTotCfg">Revogar totalmente o configurador</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs22" id="obs22" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido22" id="concluido22'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiFluigConfiguradorParc">
+										    
+										    <td>Fluig</td>
+										    <td id="libParcCfg">Liberar parcialmente o configurador</td>
+										    <td id="revParcCfg">Revogar parcialmente o configurador</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs23" id="obs23" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido23" id="concluido23'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiTransmite">
+										    
+										    <td>Transmite</td>
+										    <td id="libTransmite">Liberar o acesso no Transmite</td>
+										    <td id="revTransmite">Revogar o acesso no Transmite</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs26" id="obs26" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido26" id="concluido26'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiTae">
+										    
+										    <td>TAE</td>
+										    <td id="libTae">Liberar o acesso no TAE</td>
+										    <td id="RevTae">Revogar o acesso no TAE</td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="text" name="obs27" id="obs27" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+										    <td>
+										        <div class="form-input ">
+										            <input type="checkbox" name="concluido27" id="concluido27'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										        </div>
+										    </td>
+									</tr>
+									<tr class="tableBodyRow" id="atiRM">
+										
+										<td>RM</td>
+										<td id="libRM">Liberar o acesso no RM</td>
+										<td id="revRM">Liberar o acesso no RM</td>
+										<td>
+										    <div class="form-input ">
+										        <input type="text" name="obs28" id="obs28" class="form-control" label="teste" spellcheck="true" data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										    </div>
+										</td>
+										<td>
+										    <div class="form-input ">
+										        <input type="checkbox" name="concluido28" id="concluido28'" class="form-control"data-ms-editor="true" data-fluig-write="0,4" data-fluig-state-valid="0,4">
+										    </div>
+										</td>
+									</tr>	
+								</tbody>
+							</table>
+						</div>
+					</div>	
+				</div>
+			</div>					
+		</div>
+	</div>		
+	
+</form>
+</div>
+<div class="center">
+	<div id="documeto">
+		<table class="initial">
+			<thead>
+				<th>
+					<img src="./logo.png" alt="logo da THCM" width="100%" id="docLogo">
+				</th>
+				<th>
+					<b><p id="doctipoAcao"></p> </b>
+				</th>
+			</thead>
+			<tbody>
+				<td>
+					<b id="docPI">Procedimento Interno</b>
+				</td>
+				<td id="docData"></td>
+			</tbody>
+		</table>
+
+		<br>
+
+		<table class="tb  Tamanho">
+			<thead>
+				<tr >
+					<th colspan="4" class="tit"><b> Informações </b></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th class="alinhar">Nome:</th>
+					<td id="docNome"></td>
+					<th class="alinhar">email:</th>
+					<td id="docEmail"></td>
+				</tr>
+				<tr>
+					<th class="alinhar">Departamento:</th>
+					<td id="docDepartamento"></td>
+					<th class="alinhar">Cargo:</th>
+					<td id="docCargo"></td>
+				</tr>
+				<tr >
+					<th class="alinhar">Tipo de Acesso:</th>
+					<td >
+						<div class="flex">
+							<div>
+								Inclusão
+							</div>
+							<div class='quadrado'>
+								<h4 id="docSelInc"></h4>
+							</div>
+						</div>
+					</td>
+					<td >
+						<div class="flex">
+							<div>
+								Alteração
+							</div>
+							<div class='quadrado'>
+								<h4 id="docSelAlt"></h4>
+							</div>
+						</div>
+					</td>
+					<td >
+						<div class="flex">
+							<div>
+								Revogação
+							</div>
+							<div class='quadrado'>
+								<h4 id="docSelDes"></h4>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<table class="tb Tamanho">
+			<thead>
+				<th colspan="2" class="tit">Acessos</th>
+				<tr class="tit2">
+					<th>Serviços</th>
+					<th>Liberação</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="color1">
+					<td>Totvs Fluig</td>
+					<td id="docFluigLib">Não liberado</td>
+				</tr>
+				<tr>
+					<td>Active Directory</td>
+					<td id="docADlib">Não liberado</td>
+				</tr>
+				<tr class="color1">
+					<td>Totvs Assinatura Eletrônica</td>
+					<td id="docTaeLib">Não liberado</td>
+				</tr>
+				<tr>
+					<td>Totvs RM</td>
+					<td id="docRmLib">Não liberado</td>
+				</tr>
+				<tr>
+					<td>Totvs Transmite</td>
+					<td id="docTransLib">Não liberado</td>
+				</tr>
+				<tr>
+					<td>Totvs Protheus</td>
+					<td id="docProLib">Não liberado</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<br>
+
+		<table class="tb Tamanho">
+			<thead>
+				<th colspan="2" class="tit">Acessos Específicos</th>
+				<tr class="tit2">
+					<th colspan="2">Protheus</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="color1">
+					<td>Compras</td>
+					<td id="docCompralib">Não liberado</td>
+				</tr>
+				<tr>
+					<td>Financeiro – Contas a Receber</td>
+					<td id="docContReclib">Não liberado</td>
+				</tr>
+				<tr class="color1">
+					<td>Financeiro – Contas a Pagar</td>
+					<td id="docContPaglib">Não liberado</td>
+				</tr>
+				<tr>
+					<td>Financeira – Tesouraria</td>
+					<td id="docTeslib">Não Liberado</td>
+				</tr>
+				<tr>
+					<td>Contabilidade</td>
+					<td id="docContablib">Não Liberado</td>
+				</tr>            
+				<tr>
+					<td>Ativo Fixo</td>
+					<td id="docAtflib">Não Liberado</td>
+				</tr>            
+				<tr>
+					<td>Recursos Humanos</td>
+					<td id="docRhlib">Não Liberado</td>
+				</tr>            
+				<tr>
+					<td>Faturamento</td>
+					<td id="docfatlib">Não Liberado</td>
+				</tr>
+				<tr>
+					<td>TAF</td>
+					<td id="doctaflib">Não Liberado</td>
+				</tr>
+				<tr>
+					<td>Livros Fiscais</td>
+					<td id="doclivrolib">Não Liberado</td>
+				</tr>
+				<tr>
+					<td>Estoque e Custo</td>
+					<td id="docestlib">Não Liberado</td>
+				</tr>
+				<tr>
+					<td>Configurador</td>
+					<td id="doccfglib">Não Liberado</td>
+				</tr>
+				<tr class="tit2">
+					<th colspan="2">Fluig</th>
+				</tr>
+				<tr>
+					<td>GED</td>
+					<td id="docgedlib">Não liberado</td>
+				</tr>
+				<tr>
+					<td>Processos</td>
+					<td id="docprocessolib">Não liberado</td>
+				</tr>
+				<tr>
+					<td>Configurador</td>
+					<td id="docConfiglib">Não Liberado</td>
+				</tr>
+				
+				<tr>
+					<td colspan="2">
+						<p class="obs"><b>Observação:</b></p>
+						<div id="docObservacao"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<b>*Reprodução Proibida - Confidencial</b>
+		<br><br><br><br>
+		<div class="flex">
+			<div class="ass">
+				<p class="assinatura" id="docAprovador"></p>
+				<p class="assinatura" id="docFuncGest">Aprovador</p>
+				<p class="assinatura" id="docEmailAprovador"></p>
+				<p class="assinatura" id="docDataGest"></p>
+			</div>
+			<div class="ass">
+				<p class="assinatura" id="docNomeSup">Leonardo Toni</p>
+				<p class="assinatura" id="docFuncSup">Supervisor Técnico</p>
+				<p class="assinatura" id="docEmailSup">leonardo@parceirothcm.com.br</p>
+				<p class="assinatura" id="docDataSup"></p>
+			</div>
+			<div class="ass">
+				<p class="assinatura" id="docNomeRt"></p>
+				<p class="assinatura" id="docFuncRt">Responsável técnico</p>
+				<p class="assinatura" id="docEmailRt"></p>
+				<p class="assinatura" id="docDatRt"></p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="janela-dados" id="janela-modal1">
+	<div class="dados">
+		<h3 id="TitModal"></h1>
+		<select name="usuarios" id="usuarios" class="sel" >
+		</select>
+		<div>
+			<button class="ok" onclick="selecionaUser()">OK</button>
+			<button class="cancelar" onclick="cancelar()">Cancelar</button>
+		</div>
+		
+	</div>				
+</div>
+</body>
+</html>

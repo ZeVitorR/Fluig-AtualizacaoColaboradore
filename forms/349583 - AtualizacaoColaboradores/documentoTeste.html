@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        body{
+            font-family:Arial, Helvetica, sans-serif;
+            background-size: 60% 60%;
+            font-size: 0.8rem;
+            margin: 2cm;
+        }
+        table{
+            border-collapse: collapse;
+        }
+        table.initial{
+            margin: 0px auto;
+            width: 100%;
+        }
+        table.initial th,table.initial td{
+            width: 300px;
+            text-align: center;
+            border: 1px solid black;
+        }
+        table.tb td,table.tb th{
+            border: 1px solid black;
+            width: 500px;
+        }
+        h3{
+            margin-left: 4%;
+        }
+        .tit{
+            text-align: center;
+            background-color: #000000;
+            color: #ffffff;
+        }
+        .tit2{
+            background-color: #ada6a6;
+        }
+        table.tb th.alinhar{
+            text-align: left;
+            width: 150px;
+        }
+        .Tamanho{
+            width: 100%;
+        }
+        .assinatura{
+            margin-bottom: -10px;
+        }
+        .flex{
+            display: flex;
+            justify-content:space-between;
+        }
+        .quadrado{
+            border: 1px solid black;
+            width: 10px;
+            height: 10px;
+            margin: auto auto;
+        }
+        h4{
+            text-align: center;
+            position: relative;
+            top:-200%;
+        }
+        .obs{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <table class="initial">
+            <thead>
+                <th>
+                    <img src="./logo.png" alt="logo da THCM" width="60%">
+                </th>
+                <th>
+                    <p id="docTipoAcao"><b>Novo colaborador</b></p> 
+                </th>
+            </thead>
+            <tbody>
+                <td>
+                    <b id="PI">Procedimento Interno</b>
+                </td>
+                <td>
+                    11/03/2023
+                </td>
+            </tbody>
+        </table>
+
+        <br>
+
+        <table class="tb  Tamanho">
+            <thead>
+                <tr >
+                    <th colspan="4" class="tit"><b> Informações </b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="alinhar">Nome:</th>
+                    <td id="docNome">Rodrigo Oliveira Zamprônio</td>
+                    <th class="alinhar">email:</th>
+                    <td>rodrigo.zampronio@thcm.com.br</td>
+                </tr>
+                <tr>
+                    <th class="alinhar">Departamento:</th>
+                    <td>Planejamento Urbano</td>
+                    <th class="alinhar">Cargo:</th>
+                    <td>Engenheiro civil júnior</td>
+                </tr>
+                <tr >
+                    <th class="alinhar">Tipo de Acesso:</th>
+                    <td >
+                        <div class="flex">
+                            <div>
+                                Inclusão
+                            </div>
+                            <div class='quadrado'>
+                                <h4>X</h4>
+                            </div>
+                        </div>
+                    </td>
+                    <td >
+                        <div class="flex">
+                            <div>
+                                Alteração
+                            </div>
+                            <div class='quadrado'>
+                                
+                            </div>
+                        </div>
+                    </td>
+                    <td >
+                        <div class="flex">
+                            <div>
+                                Desativação
+                            </div>
+                            <div class='quadrado'>
+                                
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <table class="tb Tamanho">
+            <thead>
+                <th colspan="2" class="tit">Acessos</th>
+                <tr class="tit2">
+                    <th>Serviços</th>
+                    <th>Liberação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="color1">
+                    <td>Totvs Fluig</td>
+                    <td>Liberado</td>
+                </tr>
+                <tr>
+                    <td>Active Directory</td>
+                    <td>Liberado</td>
+                </tr>
+                <tr class="color1">
+                    <td>Totvs Assinatura Eletrônica</td>
+                    <td>Liberado</td>
+                </tr>
+                <tr>
+                    <td>Totvs RM</td>
+                    <td>Não Liberado</td>
+                </tr>
+                <tr>
+                    <td>Totvs Transmite</td>
+                    <td>Não Liberado</td>
+                </tr>
+                <tr>
+                    <td>Totvs Protheus</td>
+                    <td>Não Liberado</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <table class="tb Tamanho">
+            <thead>
+                <th colspan="2" class="tit">Acessos Específicos</th>
+                <tr class="tit2">
+                    <th colspan="2">Protheus</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="color1">
+                    <td>Compras</td>
+                    <td>Liberado</td>
+                </tr>
+                <tr>
+                    <td>Financeiro – Contas a Receber</td>
+                    <td>Liberado</td>
+                </tr>
+                <tr class="color1">
+                    <td>Financeiro – Contas a Pagar</td>
+                    <td>Liberado</td>
+                </tr>
+                <tr>
+                    <td>Financeira – Tesouraria</td>
+                    <td>Não Liberado</td>
+                </tr>
+                <tr>
+                    <td>Contabilidade</td>
+                    <td>Não Liberado</td>
+                </tr>            
+                <tr>
+                    <td>Ativo Fixo</td>
+                    <td>Não Liberado</td>
+                </tr>            
+                <tr>
+                    <td>Recursos Humanos</td>
+                    <td>Não Liberado</td>
+                </tr>            
+                <tr>
+                    <td>Faturamento</td>
+                    <td>Não Liberado</td>
+                </tr>
+                <tr>
+                    <td>TAF</td>
+                    <td>Não Liberado</td>
+                </tr>
+                <tr>
+                    <td>Livros Fiscais</td>
+                    <td>Não Liberado</td>
+                </tr>
+                <tr>
+                    <td>Configurador</td>
+                    <td>Não Liberado</td>
+                </tr>
+                <tr class="tit2">
+                    <th colspan="2">Fluig</th>
+                </tr>
+                <tr>
+                    <td>GED</td>
+                    <td>Liberado</td>
+                </tr>
+                <tr>
+                    <td>Processos</td>
+                    <td>Liberado Parcialmente</td>
+                </tr>
+                <tr>
+                    <td>Configurador</td>
+                    <td>Não Liberado</td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2">
+                        <p class="obs"><b>Observação:</b></p>
+                        <p class="obs">No Active Directory foi realizado a inclusão do usuário no Grupo X;</p>
+                        <p class="obs">No Totvs Assinatura Eletrônica foi realizado a permissão de incluir a assinatura e a inclusão de documento;</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <b>*Reprodução Proibida - Confidencial</b>
+        <br><br><br><br>
+        <div class="flex">
+            <div>
+                <p>____________________</p>
+                <p class="assinatura">André Rodrigues</p>
+                <p class="assinatura">Aprovador</p>
+                <p class="assinatura">11/03/2024</p>
+            </div>
+            <div>
+                <p>____________________</p>
+                <p class="assinatura">Leonardo de Toni</p>
+                <p class="assinatura">Supervisor Tecnico</p>
+                <p class="assinatura">11/03/2024</p>
+            </div>
+            <div>
+                <p>____________________</p>
+                <p class="assinatura">José Vitor Rodrigues</p>
+                <p class="assinatura">Responsável técnico</p>
+                <p class="assinatura">11/03/2024</p>
+            </div>
+        </div>
+    </div>
+</html>
